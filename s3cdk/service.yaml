@@ -202,7 +202,7 @@ Resources:
                 - ""
                 - - "arn:aws:cloudfront::"
                   - Ref: AWS::AccountId
-                  - :distribution/{{ environment.outputs.CloudFrontID }}
+                  - :distribution/E24KFU32MLOFQS
           - Action:
               - s3:GetObject*
               - s3:GetBucket*
@@ -252,7 +252,7 @@ Resources:
         EnvironmentVariables:
           - Name: CLOUDFRONT_ID
             Type: PLAINTEXT
-            Value: {{ environment.outputs.CloudFrontID }}
+            Value: E24KFU32MLOFQS
         Image: aws/codebuild/standard:1.0
         ImagePullCredentialsType: CODEBUILD
         PrivilegedMode: false
@@ -425,9 +425,9 @@ Resources:
                 Provider: CodeStarSourceConnection
                 Version: "1"
               Configuration:
-                ConnectionArn: '{{ service.repository_connection_arn }}'
-                FullRepositoryId: '{{ service.repository_id }}'
-                BranchName: '{{ service.branch_name }}'
+                ConnectionArn: arn:aws:codestar-connections:us-east-1:724050724157:connection/a777e566-e814-43b1-af2e-b95229e78e4a
+                FullRepositoryId: AWS/service_repository_id_here
+                BranchName: service_branch_name_here
               Name: Checkout
               OutputArtifacts:
                 - Name: Artifact_S3CFServiceSource_Checkout
@@ -464,7 +464,7 @@ Resources:
                 Provider: S3
                 Version: "1"
               Configuration:
-                BucketName: {{ environment.outputs.S3BucketName }}
+                BucketName: s3cloudfronttest-s3bucket-3ut3w087h9b8
                 Extract: "true"
               InputArtifacts:
                 - Name: Artifact_S3CFServiceBuild_BuildStaticSite
@@ -647,8 +647,8 @@ Resources:
               - s3:Abort*
             Effect: Allow
             Resource:
-              - arn:aws:s3:::{{ environment.outputs.S3BucketName }}
-              - arn:aws:s3:::{{ environment.outputs.S3BucketName }}/*
+              - arn:aws:s3:::s3cloudfronttest-s3bucket-3ut3w087h9b8
+              - arn:aws:s3:::s3cloudfronttest-s3bucket-3ut3w087h9b8/*
           - Action:
               - s3:GetObject*
               - s3:GetBucket*

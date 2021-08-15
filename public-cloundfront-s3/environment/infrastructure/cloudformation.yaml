@@ -12,10 +12,10 @@ Resources:
     DeletionPolicy: Retain
     Properties:
       PublicAccessBlockConfiguration: 
-        BlockPublicAcls: true
-        BlockPublicPolicy: true
-        IgnorePublicAcls: true
-        RestrictPublicBuckets: true
+        BlockPublicAcls: {{ environment.inputs.S3EnforcePublicBlock}}
+        BlockPublicPolicy: {{ environment.inputs.S3EnforcePublicBlock}}
+        IgnorePublicAcls: {{ environment.inputs.S3EnforcePublicBlock}}
+        RestrictPublicBuckets: {{ environment.inputs.S3EnforcePublicBlock}}
       Tags:
         - Key: ProtonEnvironment
           Value: !FindInMap ['EnvironmentNameConfig', 'Environment', 'Name']
@@ -70,10 +70,10 @@ Resources:
                   - ""
                   - - origin-access-identity/cloudfront/
                     - Ref: CloudfrontDistroOrigin
-        Tags:
+      Tags:
         - Key: ProtonEnvironment
           Value: !FindInMap ['EnvironmentNameConfig', 'Environment', 'Name']
-                      
+                    
 # These output values will be available to service templates to use.
 Outputs:
   S3BucketName:
@@ -83,7 +83,11 @@ Outputs:
     Description: Arn of the S3 Bucket
     Value: !GetAtt S3Bucket.Arn
   CloudFrontDomainName:
-    Description: The name of the ECS cluster
+    Description: Domain name of the Cloudfront distribution
     Value: !GetAtt CloudfrontDistro.DomainName
+  CloudFrontID:
+    Description: ID of the Cloudfront distribution
+    Value: !Ref CloudfrontDistro
+
 
 
